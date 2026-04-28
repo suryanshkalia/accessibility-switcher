@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Accessibility switcher</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+  <h1>Accessibility Demo</h1>
+
+  <div class="accessibility-menu">
+
+    <div class="panel-content" id="panelContent">
+      <button onclick="setMode('high-contrast')">High Contrast</button>
+      <button onclick="setMode('large-text')">Large Text</button>
+      <button onclick="setMode('dyslexia-mode')">Dyslexia Mode</button>
+      <button onclick="setMode('default')">Reset</button>
+    </div>
+  </div>
+</nav>
+
+    <main class="content" >
+        <p>This is a simple text</p>
+
+        <button>Click on this</button>
+
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </form>
+    </main>
+
+    <footer>
+        <p id="modeLabel">Mode: Default</p>
+          <div class="footer-info">
+          <span>Shortcuts: Ctrl + H / L / D / R</span>
+          </div>
+    </footer>
+    <script src="../script.js"></script>
+</body>
+</html>
