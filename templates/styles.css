@@ -8,6 +8,7 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
+    <!--transition: all 0.3s ease; -->
 }
 
 .navbar {
@@ -44,15 +45,16 @@ button {
     padding: 0.5rem 1rem;
 }
 
-.high-contrast {
+.high-contrast .content{
     background-color: yellow;
     color : black;
     filter: contrast(1.2);
 }
 
-.high-contrast h1,
-.high-contrast h2 {
-    color: #fff;
+.high-contrast .navbar,
+.high-contrast footer {
+    background: black;
+    color: white;
 }
 
 .high-contrast a {
@@ -60,15 +62,15 @@ button {
 }
 
 .high-contrast button {
-    background: #fff;
-    color: #000;
-    border: 2px solid #fff;
+    background: black;
+    color: yellow;
+    border: 2px solid black;
 }
 
 .high-contrast input {
-    background: #000;
-    color: #fff;
-    border: 2px solid #fff;
+    background: yellow;
+    color: black;
+    border: 2px solid black;
 }
 
 .high-contrast *:focus {
