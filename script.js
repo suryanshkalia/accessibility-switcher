@@ -1,29 +1,21 @@
 const modes = ["high-contrast", "large-text", "dyslexia-mode"];
 
-function setMode(mode){
-    document.body.classList.remove(...modes);
+function toggleMode(mode){
+    document.body.classList.toggle(mode);
 
-    if ( mode != "default"){
-        document.body.classList.add(mode);
-    }
+    updateSettings();
+    updateUI();
+}
 
-    const settings = loadSettings();
+function resetModes(){
+    document.body.classList.remove(
+        "high-contrast",
+        "large-text",
+        "dyslexia-mode"
+    );
 
-    settings.mode = mode;
-
-    saveSettings(settings);
-
-    document.getElementById("modeLabel").innerText = "Mode: " + formatMode(mode);
-
-    document.getElementById("modeLabel").innerText = "Mode: " + mode;
-
-    const status = document.getElementById("statusText");
-
-    if (mode == "default") {
-        status.innerText = "Accessibility: OFF";
-    }else{
-        status.innerText = "Accessibility: ON";
-    }
+    updateSettings();
+    updateUI();
 }
 
 function formatMode(mode){
@@ -36,36 +28,63 @@ function formatMode(mode){
 window.onload = function(){
     const settings = loadSettings();
 
-    setMode(settings.mode);
+    settings.modes.forEach(mode => {
+        document.body.classList.add(mode);
+    })
+
+    updateUI();
+}
+
+function updateUI(){
+    const modes = [];
+
+    if( document.body.classList.contains("high-contrast"))
+        modes.push("High Contrast");
+
+    if( document.body.classList.contains("large-text"))
+        modes.push("Large Text");
+
+    if( document.body.classList.contains("dyslexia-mode"))
+        modes.push("Dyslexia");
+
+    const label = document.getElementById("modeLabel");
+
+    label.innerText = modes.length ? "Active: " + modes.join(", ") : "Mode: Default";
 }
 
 document.addEventListener("keydown", function(e){
-    const tag = e.target.tagName;
-
-    if ( tag == "INPUT" || tag == "TEXTAREA" ) return;
-
-    if (!e.ctrlKey) return
+    if (!e.ctrlKey) return;
 
     const key = e.key.toLowerCase();
 
-    if( key == "h") setMode("high-contrast");
-    if( key == "l") setMode("large-text");
-    if( key == "d") setMode("dyslexia-mode");
-    if( key == "r") setMode("default")
+    e.preventDefault();
 
+    if ( key === "h" ) toggleMode("high-contrast");
+    if ( key === "l" ) toggleMode("large-text");
+    if ( key === "d" ) toggleMode("dyslexia-mode");
+    if ( key === "r" ) resetModes();
 });
 
-const settings = {
-    mode: "default"
-};
+function updateSettings(){
+    const activeModes = [];
 
-function saveSettings(settings) {
-    localStorage.setItem("accessibilitySettings", JSON.stringify(settings));
+    if (document.body.classList.contains("high-contrast"))
+        activeModes.push("high-contrast");
+
+    if (document.body.classList.contains("large-text"))
+        activeModes.push("large-text");
+
+    if (document.body.classList.contains("dyslexia-mode"))
+        activeModes.push("dyslexia-mode");
+
+    localStorage.setItem("accessibilitySettings", JSON.stringify({
+        modes: activeModes
+    }));
 }
 
 function loadSettings() {
     const data = localStorage.getItem("accessibilitySettings")
-    return data ? JSON.parse(data) : { mode : "default" }
+    return data ? JSON.parse(data) : { modes : [] };
 }
 
 function togglePanel() {
