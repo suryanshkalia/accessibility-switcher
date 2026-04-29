@@ -1,13 +1,5 @@
 const modes = ["high-contrast", "large-text", "dyslexia-mode"];
 
-const status = document.getElementById("statusText");
-
-if (mode == "default") {
-    status.innnerText = "Accessibility: OFF";
-}else{
-    status.innnerText = "Accessibility: ON";
-}
-
 function setMode(mode){
     document.body.classList.remove(...modes);
 
@@ -15,15 +7,36 @@ function setMode(mode){
         document.body.classList.add(mode);
     }
 
-    localStorage.setItem("mode", mode);
+    const settings = loadSettings();
+
+    settings.mode = mode;
+
+    saveSettings(settings);
+
+    document.getElementById("modeLabel").innerText = "Mode: " + formatMode(mode);
 
     document.getElementById("modeLabel").innerText = "Mode: " + mode;
+
+    const status = document.getElementById("statusText");
+
+    if (mode == "default") {
+        status.innerText = "Accessibility: OFF";
+    }else{
+        status.innerText = "Accessibility: ON";
+    }
+}
+
+function formatMode(mode){
+    if (mode == "high-contrast") return "High Contrast";
+    if ( mode == "large-text") return "Large Text";
+    if ( mode == "dyslexia-mode") return "Dyslexia";
+    return "default";
 }
 
 window.onload = function(){
-    const savedMode = localStorage.getItem("mode") || "default";
-    setMode(savedMode);
-    switcher.value = savedMode;
+    const settings = loadSettings();
+
+    setMode(settings.mode);
 }
 
 document.addEventListener("keydown", function(e){
@@ -41,6 +54,19 @@ document.addEventListener("keydown", function(e){
     if( key == "r") setMode("default")
 
 });
+
+const settings = {
+    mode: "default"
+};
+
+function saveSettings(settings) {
+    localStorage.setItem("accessibilitySettings", JSON.stringify(settings));
+}
+
+function loadSettings() {
+    const data = localStorage.getItem("accessibilitySettings")
+    return data ? JSON.parse(data) : { mode : "default" }
+}
 
 function togglePanel() {
     const panel = document.getElementById("panelContent");
