@@ -2,6 +2,10 @@ html, body {
     height: 100%;
 }
 
+section {
+    margin-top: 2rem;
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
